@@ -1,0 +1,12 @@
+# Arquivo de Exemplo de Configuração de Banco de Dados
+# COPIE ESTE ARQUIVO PARA 'config.properties' E PREENCHA COM SUAS CREDENCIAIS REAIS.
+
+db.url=jdbc:mysql://localhost:3306/sistema_chamados
+db.user=escolha_um_usuario
+db.password=escolha_uma_senha_forte
+db.ssl=?useSSL=true&requireSSL=true&verifyServerCertificate=false&allowPublicKeyRetrieval=true
+
+# Hikari Pool Config
+db.pool.max=10
+db.pool.min=2
+db.pool.timeout=30000

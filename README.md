@@ -25,8 +25,6 @@ A arquitetura do sistema é baseada em camadas, seguindo o padrão Model-View-Co
 | **Segurança** | BCrypt, AES-256 GCM | **BCrypt** para hashing seguro de senhas e **AES-256 GCM** para criptografia de dados sensíveis. |
 | **Arquitetura** | MVC (Model-View-Controller) | Padrão de projeto aplicado para garantir a separação de responsabilidades. |
 
-***
-
 ---
 
 ## 👩‍💻 Autor

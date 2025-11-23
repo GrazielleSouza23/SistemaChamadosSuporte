@@ -1,6 +1,4 @@
-# Sistema de Chamados de Suporte
-
-💻 Sobre o Projeto
+## 💻 Sobre o Projeto
 
 O Sistema de Chamados de Suporte é uma aplicação desktop robusta, desenvolvida integralmente em Java, com o propósito de otimizar a gestão e o rastreamento de solicitações de suporte técnico, conhecidas como tickets. O projeto foi concebido para criar um ambiente organizado e eficiente, separando de forma clara as interações e responsabilidades entre os Usuários Finais (clientes que abrem os chamados) e os Agentes de Suporte (profissionais responsáveis por resolver as solicitações).
 
@@ -41,5 +39,3 @@ Desenvolvido por **Grazielle Souza**.
 
 [![Email](https://img.shields.io/badge/Email-graziellesouza2305%40gmail.com-red?logo=gmail&logoColor=white)](mailto:graziellesouza2305@gmail.com)  
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Grazielle%20Souza-blue?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/grazielle-souza-5374bb315/)
-
-# SistemaChamadosSuporte

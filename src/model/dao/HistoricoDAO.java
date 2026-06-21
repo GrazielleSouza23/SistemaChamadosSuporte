@@ -13,11 +13,6 @@ public class HistoricoDAO {
 
     private static final Logger logger = Logger.getLogger(HistoricoDAO.class.getName());
 
-    private final Connection connection;
-
-    public HistoricoDAO() {
-        this.connection = ConexaoBD.getInstance().getConnection();
-    }
 
     /**
      * Salva um novo registro de Histórico no banco de dados.
@@ -26,7 +21,8 @@ public class HistoricoDAO {
         String sql = "INSERT INTO Historico (acao, descricao, id_ticket, id_responsavel) VALUES (?, ?, ?, ?)";
         int idGerado = -1;
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = ConexaoBD.getInstance().getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, historico.getAcao());
             stmt.setString(2, historico.getDescricao());
@@ -56,12 +52,14 @@ public class HistoricoDAO {
      */
     public List<Historico> listarPorTicket(int idTicket) {
         List<Historico> historicos = new ArrayList<>();
-        
-        String sql = 
+
+        String sql =
             "SELECT id_historico, acao, descricao, data_registro, id_ticket, id_responsavel " +
             "FROM Historico WHERE id_ticket = ? ORDER BY data_registro ASC";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = ConexaoBD.getInstance().getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
             stmt.setInt(1, idTicket);
 
             try (ResultSet rs = stmt.executeQuery()) {

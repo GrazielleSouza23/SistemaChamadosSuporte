@@ -12,11 +12,10 @@ import java.util.logging.Logger;
 public class NotificacaoDAO {
 
     private static final Logger logger = Logger.getLogger(NotificacaoDAO.class.getName());
-    private final Connection connection;
 
-    public NotificacaoDAO() {
-        this.connection = ConexaoBD.getInstance().getConnection();
-    }
+    // CORREÇÃO: removido o campo "private final Connection connection" e o construtor
+    // que o inicializava. A conexão agora é obtida e devolvida ao pool dentro de
+    // cada método, igual ao padrão usado em AnexoDAO e TicketDAO.
 
     /**
      * Salva uma nova notificação no banco.
@@ -25,7 +24,8 @@ public class NotificacaoDAO {
         String sql = "INSERT INTO Notificacao (tipo, conteudo, id_destinatario, id_ticket) VALUES (?, ?, ?, ?)";
         int idGerado = -1;
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = ConexaoBD.getInstance().getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, notificacao.getTipo());
             stmt.setString(2, notificacao.getConteudo());
@@ -66,7 +66,9 @@ public class NotificacaoDAO {
                 "FROM Notificacao WHERE id_destinatario = ? AND lido = FALSE " +
                 "ORDER BY data_envio DESC";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = ConexaoBD.getInstance().getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
             stmt.setInt(1, idDestinatario);
 
             try (ResultSet rs = stmt.executeQuery()) {
@@ -88,9 +90,12 @@ public class NotificacaoDAO {
     public boolean marcarComoLida(int idNotificacao) {
         String sql = "UPDATE Notificacao SET lido = TRUE WHERE id_notificacao = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = ConexaoBD.getInstance().getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
             stmt.setInt(1, idNotificacao);
             return stmt.executeUpdate() > 0;
+
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Erro ao marcar notificação como lida", e);
             return false;

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
  * Representa um chamado de suporte.
  */
 public class Ticket {
-    
+
     private int idTicket;
     private String titulo;
     private String descricao;
@@ -20,7 +20,9 @@ public class Ticket {
     private Integer idAgenteResponsavel; // Integer para permitir valor null
 
     // Construtor completo
-    public Ticket(int idTicket, String titulo, String descricao, String status, String categoria, String prioridade, LocalDateTime dataAbertura, LocalDateTime dataFechamento, int idUsuarioAbertura, Integer idAgenteResponsavel) {
+    public Ticket(int idTicket, String titulo, String descricao, String status, String categoria,
+                  String prioridade, LocalDateTime dataAbertura, LocalDateTime dataFechamento,
+                  int idUsuarioAbertura, Integer idAgenteResponsavel) {
         this.idTicket = idTicket;
         this.titulo = titulo;
         this.descricao = descricao;
@@ -32,7 +34,7 @@ public class Ticket {
         this.idUsuarioAbertura = idUsuarioAbertura;
         this.idAgenteResponsavel = idAgenteResponsavel;
     }
-    
+
     // Construtor para abertura de novo ticket (sem ID, datas e agente)
     public Ticket(String titulo, String descricao, String categoria, String prioridade, int idUsuarioAbertura) {
         this.titulo = titulo;
@@ -40,94 +42,44 @@ public class Ticket {
         this.categoria = categoria;
         this.prioridade = prioridade;
         this.idUsuarioAbertura = idUsuarioAbertura;
-        this.status = "ABERTO"; // Status inicial
+        this.status = "ABERTO";
         this.dataAbertura = LocalDateTime.now();
         this.idAgenteResponsavel = null;
         this.dataFechamento = null;
     }
 
     // Getters e Setters
-    public int getIdTicket() {
-        return idTicket;
-    }
+    public int getIdTicket() { return idTicket; }
+    public void setIdTicket(int idTicket) { this.idTicket = idTicket; }
 
-    public void setIdTicket(int idTicket) {
-        this.idTicket = idTicket;
-    }
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
 
-    public String getTitulo() {
-        return titulo;
-    }
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public String getDescricao() {
-        return descricao;
-    }
+    public String getCategoria() { return categoria; }
+    public void setCategoria(String categoria) { this.categoria = categoria; }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
+    public String getPrioridade() { return prioridade; }
+    public void setPrioridade(String prioridade) { this.prioridade = prioridade; }
 
-    public String getStatus() {
-        return status;
-    }
+    public LocalDateTime getDataAbertura() { return dataAbertura; }
+    public void setDataAbertura(LocalDateTime dataAbertura) { this.dataAbertura = dataAbertura; }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public LocalDateTime getDataFechamento() { return dataFechamento; }
+    public void setDataFechamento(LocalDateTime dataFechamento) { this.dataFechamento = dataFechamento; }
 
-    public String getCategoria() {
-        return categoria;
-    }
+    public int getIdUsuarioAbertura() { return idUsuarioAbertura; }
+    public void setIdUsuarioAbertura(int idUsuarioAbertura) { this.idUsuarioAbertura = idUsuarioAbertura; }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
-    public String getPrioridade() {
-        return prioridade;
-    }
-
-    public void setPrioridade(String prioridade) {
-        this.prioridade = prioridade;
-    }
-
-    public LocalDateTime getDataAbertura() {
-        return dataAbertura;
-    }
-
-    public void setDataAbertura(LocalDateTime dataAbertura) {
-        this.dataAbertura = dataAbertura;
-    }
-
-    public LocalDateTime getDataFechamento() {
-        return dataFechamento;
-    }
-
-    public void setDataFechamento(LocalDateTime dataFechamento) {
-        this.dataFechamento = dataFechamento;
-    }
-
-    public int getIdUsuarioAbertura() {
-        return idUsuarioAbertura;
-    }
-
-    public void setIdUsuarioAbertura(int idUsuarioAbertura) {
-        this.idUsuarioAbertura = idUsuarioAbertura;
-    }
-
-    public Integer getIdAgenteResponsavel() {
-        return idAgenteResponsavel;
-    }
-
-    public void setIdAgenteResponsavel(Integer idAgenteResponsavel) {
-        this.idAgenteResponsavel = idAgenteResponsavel;
-    }
+    public Integer getIdAgenteResponsavel() { return idAgenteResponsavel; }
+    public void setIdAgenteResponsavel(Integer idAgenteResponsavel) { this.idAgenteResponsavel = idAgenteResponsavel; }
 
     public int getIdUsuario() {
-        throw new UnsupportedOperationException("Sem suporte ainda."); 
+        return this.idUsuarioAbertura;
     }
 }

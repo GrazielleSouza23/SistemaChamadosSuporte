@@ -14,12 +14,14 @@ import java.util.Properties;
  */
 public class ConexaoBD {
 
-    private static ConexaoBD instance;
+    // CORREÇÃO: inicialização estática garante thread-safety sem precisar de
+    // synchronized. A instância é criada uma única vez quando a classe é carregada.
+    private static final ConexaoBD instance = new ConexaoBD();
+
     private HikariDataSource dataSource;
 
     private ConexaoBD() {
         try {
-            // Carregar config.properties (inclui db.user e db.password)
             Properties props = new Properties();
             InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties");
 
@@ -32,11 +34,9 @@ public class ConexaoBD {
             String baseUrl = props.getProperty("db.url");
             String ssl = props.getProperty("db.ssl");
 
-            // --- tenta ler usuário e senha das variáveis de ambiente ---
             String envUser = System.getenv("DB_USER");
             String envPassword = System.getenv("DB_PASSWORD");
 
-            // Fallback: usar o que está no config.properties (ambiente local)
             String user = (envUser != null && !envUser.isEmpty())
                     ? envUser
                     : props.getProperty("db.user");
@@ -45,20 +45,17 @@ public class ConexaoBD {
                     ? envPassword
                     : props.getProperty("db.password");
 
-            // Log amigável (sem mostrar senha)
             if (envUser == null) {
                 System.out.println("AVISO: DB_USER nao definido. Usando usuario do config.properties.");
             } else {
                 System.out.println("Credenciais carregadas a partir das variaveis de ambiente.");
             }
 
-            // Configuração do HikariCP
             HikariConfig config = new HikariConfig();
             config.setJdbcUrl(baseUrl + ssl);
             config.setUsername(user);
             config.setPassword(password);
 
-            // Parâmetros do pool
             config.setMaximumPoolSize(Integer.parseInt(props.getProperty("db.pool.max", "10")));
             config.setMinimumIdle(Integer.parseInt(props.getProperty("db.pool.min", "2")));
             config.setConnectionTimeout(Integer.parseInt(props.getProperty("db.pool.timeout", "30000")));
@@ -78,18 +75,20 @@ public class ConexaoBD {
     }
 
     public static ConexaoBD getInstance() {
-        if (instance == null) {
-            instance = new ConexaoBD();
-        }
         return instance;
     }
 
+    // CORREÇÃO: lança RuntimeException em vez de retornar null silenciosamente.
+    // Retornar null causaria NullPointerException nos DAOs sem uma mensagem clara.
     public Connection getConnection() {
+        if (dataSource == null) {
+            throw new RuntimeException("Pool de conexões não foi inicializado corretamente.");
+        }
         try {
             return dataSource.getConnection();
         } catch (SQLException e) {
             System.err.println("Erro ao obter conexão do pool: " + e.getMessage());
-            return null;
+            throw new RuntimeException("Falha ao obter conexão do banco de dados.", e);
         }
     }
 
